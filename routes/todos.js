@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const Todo = require('../models/Todo');
 
 router.post('/', async(req, res) => {
     try {
@@ -10,18 +11,21 @@ router.post('/', async(req, res) => {
     }
 });
 
-router.get('/',(req, res) => {
+router.get('/', async(req, res) => {
     try {
-        const todo = await Todo().find();
-        res.send(todo);
+        const todos = await Todo.find();
+        console.log(todos);
+        console.log("Hello success");
+        return res.json(todos);
     } catch (error) {
-        res.send(todo);
+        console.log("Hello error", error.message);
+        res.send(error);
     }
 });
 
 router.put('/:id', async(req, res) => {
     try {
-        const todoToUpdate = await Todo().findOneAndUpdate(
+        const todoToUpdate = await Todo.findOneAndUpdate(
             {_id: req.params.id},
             req.body
         )
